@@ -1,0 +1,92 @@
+[
+    {
+        "className": "Guitar Fundamentals",
+        "image": "https://i.ibb.co/nnCdVG5/piano.jpg",
+        "instructorName": "John Smith",
+        "instructorEmail": "john@example.com",
+        "availableSeats": 15,
+        "price": 10.99,
+        "students": 8
+    },
+    {
+        "className": "Piano Mastery",
+        "image": "https://i.ibb.co/nnCdVG5/piano.jpg",
+        "instructorName": "Mary Johnson",
+        "instructorEmail": "mary@example.com",
+        "availableSeats": 8,
+        "price": 25.5,
+        "students": 3
+    },
+    {
+        "className": "Drumming Essentials",
+        "image": "https://i.ibb.co/nnCdVG5/piano.jpg",
+        "instructorName": "David Davis",
+        "instructorEmail": "david@example.com",
+        "availableSeats": 5,
+        "price": 19.99,
+        "students": 2
+    },
+    {
+        "className": "Bass Guitar Basics",
+        "image": "https://i.ibb.co/nnCdVG5/piano.jpg",
+        "instructorName": "Sarah Thompson",
+        "instructorEmail": "sarah@example.com",
+        "availableSeats": 12,
+        "price": 15.75,
+        "students": 10
+    },
+    {
+        "className": "Violin Techniques",
+        "image": "https://i.ibb.co/nnCdVG5/piano.jpg",
+        "instructorName": "Michael Johnson",
+        "instructorEmail": "michael@example.com",
+        "availableSeats": 20,
+        "price": 12.5,
+        "students": 5
+    },
+    {
+        "className": "Flute for Beginners",
+        "image": "https://i.ibb.co/nnCdVG5/piano.jpg",
+        "instructorName": "Emily Davis",
+        "instructorEmail": "emily@example.com",
+        "availableSeats": 6,
+        "price": 29.99,
+        "students": 4
+    },
+    {
+        "className": "Saxophone Fundamentals",
+        "image": "https://i.ibb.co/nnCdVG5/piano.jpg",
+        "instructorName": "Daniel Wilson",
+        "instructorEmail": "daniel@example.com",
+        "availableSeats": 10,
+        "price": 8.99,
+        "students": 7
+    },
+    {
+        "className": "Trumpet Mastery",
+        "image": "https://i.ibb.co/nnCdVG5/piano.jpg",
+        "instructorName": "Sophia Lee",
+        "instructorEmail": "sophia@example.com",
+        "availableSeats": 4,
+        "price": 22.5,
+        "students": 3
+    },
+    {
+        "className": "Vocal Training",
+        "image": "https://i.ibb.co/nnCdVG5/piano.jpg",
+        "instructorName": "Ryan Thompson",
+        "instructorEmail": "ryan@example.com",
+        "availableSeats": 15,
+        "price": 9.99,
+        "students": 12
+    },
+    {
+        "className": "Jazz Improvisation",
+        "image": "https://i.ibb.co/nnCdVG5/piano.jpg",
+        "instructorName": "Olivia Johnson",
+        "instructorEmail": "olivia@example.com",
+        "availableSeats": 8,
+        "price": 18.5,
+        "students": 6
+    }
+]
