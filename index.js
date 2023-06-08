@@ -28,13 +28,72 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
-        const classCollecton = client.db('instruPlayDB').collection('classes');
+        const userCollection = client.db('instruPlayDB').collection('users');
+        const classCollection = client.db('instruPlayDB').collection('classes');
+        const cartCollection = client.db('instruPlayDB').collection('carts');
 
         // class related apis
         app.get('/classes', async (req, res) => {
-            const result = await classCollecton.find().toArray();
+            const cursor = classCollection.find().sort({ students: -1 })
+            const result = await cursor.toArray();
             res.send(result);
         })
+
+        // user related apis
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+
+            const query = { email: user.email };
+            const existingUser = await userCollection.findOne(query);
+            if (existingUser) {
+                return res.send({ message: 'user already exists' })
+            }
+
+            const result = await userCollection.insertOne(user);
+            res.send(result);
+
+        })
+
+        // get user
+        app.get('/users/:email', async (req, res) => {
+            const email = req.params.email
+            const query = { email: email }
+            const result = await userCollection.findOne(query)
+            res.send(result);
+        })
+
+        // instructors
+        // app.get('/instructors', async (req, res => {
+        //     const query = {role: 'instructor'};
+        //     const result = await userCollection.find(query)
+        // }))
+
+        app.get('/instructors', async (req, res) => {
+            const query = { role: 'instructor' };
+            const result = await userCollection.find(query).sort({ students: -1 }).toArray();
+            res.send(result);
+        })
+
+        // get selected class by email
+        app.get('/carts', async (req, res) => {
+            const email = req.query.email;
+
+            if (!email) {
+                res.send([]);
+            }
+
+            const query = { email: email };
+            const result = await cartCollection.find(query).toArray();
+            res.send(result);
+        })
+
+        // add select class
+        app.post('/carts', async (req, res) => {
+            const selectedClass = req.body;
+            const result = await cartCollection.insertOne(selectedClass);
+            res.send(result);
+        })
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
