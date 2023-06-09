@@ -2,7 +2,8 @@
     {
         "name": "John Doe",
         "email": "johndoe@example.com",
-        "image": "https://i.ibb.co/BrzTpr5/review3.jpg"
+        "image": "https://i.ibb.co/BrzTpr5/review3.jpg",
+        "role": "student"
     },
     {
         "name": "Jane Smith",
@@ -28,7 +29,8 @@
     {
         "name": "Robert Smith",
         "email": "robertsmith@example.com",
-        "image": "https://i.ibb.co/BrzTpr5/review3.jpg"
+        "image": "https://i.ibb.co/BrzTpr5/review3.jpg",
+        "role": "student"
     },
     {
         "name": "Sarah Wilson",
