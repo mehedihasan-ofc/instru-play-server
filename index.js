@@ -52,22 +52,54 @@ async function run() {
         const classCollection = client.db('instruPlayDB').collection('classes');
         const cartCollection = client.db('instruPlayDB').collection('carts');
 
+        // jwt
         app.post('/jwt', (req, res) => {
             const user = req.body;
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7d' })
 
             res.send({ token })
         })
 
+        // verifyAdmin
+        const verifyAdmin = async (req, res, next) => {
+            const email = req.decoded.email;
+            const query = { email: email }
+            const user = await userCollection.findOne(query);
+            if (user?.role !== 'admin') {
+                return res.status(403).send({ error: true, message: 'forbidden message' })
+            }
+
+            next();
+        }
+
+        // verifyInstructor
+        const verifyInstructor = async (req, res, next) => {
+            const email = req.decoded.email;
+            const query = { email: email }
+            const user = await userCollection.findOne(query);
+            if (user?.role !== 'instructor') {
+                return res.status(403).send({ error: true, message: 'forbidden message' })
+            }
+
+            next();
+        }
+
         // class related apis
         app.get('/classes', async (req, res) => {
-            const cursor = classCollection.find().sort({ students: -1 })
+            const filter = { status: "approved" }
+            const cursor = classCollection.find(filter).sort({ students: -1 })
             const result = await cursor.toArray();
             res.send(result);
         })
 
+        app.post('/classes', verifyJWT, verifyInstructor, async (req, res) => {
+            const newClass = req.body;
+            const result = await classCollection.insertOne(newClass);
+            res.send(result);
+        })
+
         // user related apis
-        app.get('/users', async (req, res) => {
+        app.get('/users', verifyJWT, verifyAdmin, async (req, res) => {
             const result = await userCollection.find().toArray();
             res.send(result);
         })
@@ -84,6 +116,34 @@ async function run() {
             const result = await userCollection.insertOne(user);
             res.send(result);
 
+        })
+
+        // check role admin
+        app.get('/users/admin/:email', verifyJWT, async (req, res) => {
+            const email = req.params.email;
+
+            if (req.decoded.email !== email) {
+                res.send({ admin: false });
+            }
+
+            const query = { email: email };
+            const user = await userCollection.findOne(query);
+            const result = { admin: user?.role === 'admin' }
+            res.send(result);
+        })
+
+        // check role instructor
+        app.get('/users/instructor/:email', verifyJWT, async (req, res) => {
+            const email = req.params.email;
+
+            if (req.decoded.email !== email) {
+                res.send({ instructor: false });
+            }
+
+            const query = { email: email };
+            const user = await userCollection.findOne(query);
+            const result = { instructor: user?.role === 'instructor' }
+            res.send(result);
         })
 
         app.patch('/users/instructor/:id', async (req, res) => {
