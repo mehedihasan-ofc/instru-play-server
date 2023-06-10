@@ -122,6 +122,34 @@ async function run() {
             res.send(result);
         })
 
+        app.patch('/classes/approve/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+
+            const updateDoc = {
+                $set: {
+                    status: 'approved'
+                },
+            };
+
+            const result = await classCollection.updateOne(query, updateDoc);
+            res.send(result);
+        })
+
+        app.patch('/classes/deny/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+
+            const updateDoc = {
+                $set: {
+                    status: 'denied'
+                },
+            };
+
+            const result = await classCollection.updateOne(query, updateDoc);
+            res.send(result);
+        })
+
         // user related apis
         app.get('/users', verifyJWT, verifyAdmin, async (req, res) => {
             const result = await userCollection.find().toArray();
