@@ -111,6 +111,11 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/classes/manage-classes', verifyJWT, verifyAdmin, async (req, res) => {
+            const result = await classCollection.find().toArray();
+            res.send(result);
+        })
+
         app.post('/classes', verifyJWT, verifyInstructor, async (req, res) => {
             const newClass = req.body;
             const result = await classCollection.insertOne(newClass);
