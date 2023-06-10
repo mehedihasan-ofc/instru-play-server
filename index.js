@@ -281,6 +281,26 @@ async function run() {
             res.send(result);
         })
 
+        // feedback
+        app.get('/feedback/:id', verifyJWT, verifyAdmin, async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await classCollection.findOne(query);
+            res.send(result);
+        })
+
+        app.patch('/admin/feedback/:id', verifyJWT, verifyAdmin, async (req, res) => {
+            const feedback = req.body;
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            // const options = { upsert: true }
+            const updateDoc = {
+                $set: feedback,
+            }
+            const result = await classCollection.updateOne(filter, updateDoc)
+            res.send(result)
+        })
+
         //============================================>> payment related apis
         app.get('/payment/:id', verifyJWT, async (req, res) => {
             const id = req.params.id;
