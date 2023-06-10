@@ -225,6 +225,14 @@ async function run() {
             res.send(result);
         })
 
+        // 
+        app.get('/my-enrolled', verifyJWT, async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const result = await paymentCollection.find(query).toArray();
+            res.send(result);
+        })
+
         // add select class
         app.post('/carts', async (req, res) => {
             const selectedClass = req.body;
