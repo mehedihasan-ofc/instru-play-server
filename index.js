@@ -52,6 +52,7 @@ async function run() {
         const userCollection = client.db('instruPlayDB').collection('users');
         const classCollection = client.db('instruPlayDB').collection('classes');
         const cartCollection = client.db('instruPlayDB').collection('carts');
+        const paymentCollection = client.db('instruPlayDB').collection('payments');
 
         // jwt
         app.post('/jwt', (req, res) => {
@@ -261,6 +262,21 @@ async function run() {
             res.send({
                 clientSecret: paymentIntent.client_secret
             })
+        })
+
+        //===> payment related api
+        app.post('/payments', verifyJWT, async (req, res) => {
+            const payment = req.body;
+            const insertResult = await paymentCollection.insertOne(payment);
+
+            const classQuery = { _id: new ObjectId(payment.classId) };
+            const updateOptions = { $inc: { availableSeats: -1, students: 1 } };
+            const updateResult = await classCollection.updateOne(classQuery, updateOptions);
+
+            const query = { _id: new ObjectId(payment.cartId) };
+            const deleteResult = await cartCollection.deleteOne(query);
+
+            res.send({ insertResult, deleteResult, updateResult });
         })
 
 
