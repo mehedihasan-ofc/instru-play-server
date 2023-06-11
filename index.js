@@ -52,6 +52,7 @@ async function run() {
         const userCollection = client.db('instruPlayDB').collection('users');
         const classCollection = client.db('instruPlayDB').collection('classes');
         const cartCollection = client.db('instruPlayDB').collection('carts');
+        const sliderCollection = client.db('instruPlayDB').collection('sliders');
         const paymentCollection = client.db('instruPlayDB').collection('payments');
 
         // jwt
@@ -85,6 +86,12 @@ async function run() {
 
             next();
         }
+
+        // slider
+        app.get('/sliders', async (req, res) => {
+            const result = await sliderCollection.find().toArray();
+            res.send(result);
+        })
 
         // class related apis
         app.get('/classes', async (req, res) => {
@@ -345,6 +352,14 @@ async function run() {
             const deleteResult = await cartCollection.deleteOne(query);
 
             res.send({ insertResult, deleteResult, updateResult });
+        })
+
+        // home stats
+        app.get('/home-stats', async (req, res) => {
+            const students = await userCollection.countDocuments({ role: 'student' });
+            const classes = await classCollection.estimatedDocumentCount();
+            const instructors = await userCollection.countDocuments({ role: 'instructor' });
+            res.send({ students, classes, instructors });
         })
 
 
