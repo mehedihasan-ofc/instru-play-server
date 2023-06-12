@@ -362,6 +362,20 @@ async function run() {
             res.send({ students, classes, instructors });
         })
 
+        // student stats
+        app.get('/admin-stats', verifyJWT, verifyAdmin, async (req, res) => {
+            const users = await userCollection.estimatedDocumentCount();
+            const students = await userCollection.countDocuments({ role: 'student' });
+            const instructors = await userCollection.countDocuments({ role: 'instructor' });
+            const admin = await userCollection.countDocuments({ role: 'admin' });
+
+            const classes = await classCollection.estimatedDocumentCount();
+            const payments = await paymentCollection.find().toArray();
+            const revenue = payments.reduce((sum, payment) => sum + payment.price, 0);
+
+            res.send({ users, students, instructors, admin, classes, revenue });
+        })
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
