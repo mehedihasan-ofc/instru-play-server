@@ -49,6 +49,7 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
 
+        //===> collection
         const userCollection = client.db('instruPlayDB').collection('users');
         const classCollection = client.db('instruPlayDB').collection('classes');
         const cartCollection = client.db('instruPlayDB').collection('carts');
@@ -87,7 +88,7 @@ async function run() {
             next();
         }
 
-        // slider
+        // slider data
         app.get('/sliders', async (req, res) => {
             const result = await sliderCollection.find().toArray();
             res.send(result);
